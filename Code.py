@@ -4,9 +4,7 @@ import numpy as np
 import statsmodels.api as sm
 
 #Data
-df = pd.read_csv(
-    '/Users/linzixuan/Documents/ECON-481-Final-Tester/Monthly_Macroeconomic_Factors.csv'
-    ) # this should be whatever the path is to the file
+df = pd.read_csv('file path')
 df.set_index('Date', inplace=True) # set the date as the index
 
 #Model
