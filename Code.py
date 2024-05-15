@@ -8,16 +8,10 @@ df = pd.read_csv('file path')
 df.set_index('Date', inplace=True) # set the date as the index
 
 #Model
-Y = df['House_Price_Index'] # Define dependent variable
-Y = Y.to_numpy()
-Y = Y.astype(float)
-Y = Y.reshape(-1, 1)
+formula = 'House_Price_Index ~ ' + ' + '.join(
+    df.columns.difference(['House_Price_Index'])) #get all the columns except for the house price index
 
-X = df.drop('House_Price_Index', axis=1) # Define independent variables
-X = sm.add_constant(X) # Add a constant to the independent values
-X = X.to_numpy()
-
-model = sm.OLS(Y, X)
+model = smf.ols(formula, data=df)
 results = model.fit()
 
 print(results.summary())
