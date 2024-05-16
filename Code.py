@@ -43,3 +43,17 @@ vif["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
 print(vif)
 
 #It appears there are all three issues present in our model. We will address them one by one.
+
+#plots
+variables = df.columns
+plt.figure(figsize=(15, 30))  # Increase the figure size to 15 inches wide by 30 inches tall
+for i, var in enumerate(variables, start=1):
+    plt.subplot(len(variables), 1, i)
+    plt.plot(df.index, df[var])
+    plt.title(var)
+    plt.xlabel('Time')
+    plt.ylabel(var)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+plt.show()
