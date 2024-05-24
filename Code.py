@@ -57,3 +57,28 @@ for i, var in enumerate(variables, start=1):
     plt.tight_layout()
 
 plt.show()
+
+#lasso
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import train_test_split
+
+# Assume df is your DataFrame and 'House_Price_Index' is your target variable
+X = df.drop('House_Price_Index', axis=1)
+y = df['House_Price_Index']
+
+# Split the data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create and fit the Lasso regression model
+lasso = Lasso(alpha=0.1)
+lasso.fit(X_train, y_train)
+
+import pandas as pd
+
+# Create a DataFrame with the coefficients and column names
+coef_df = pd.DataFrame({
+    'Feature': X.columns,
+    'Coefficient': lasso.coef_
+})
+
+print(coef_df)
