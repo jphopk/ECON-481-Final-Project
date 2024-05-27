@@ -73,7 +73,7 @@ vif["VIF"] = [variance_inflation_factor(X_vif.values, i) for i in range(X_vif.sh
 
 print(vif)
 
-# Assume df is your DataFrame and 'House_Price_Index' is your target variable
+#new lasso
 X = df[['Unemployment_Rate', 'Real_GDP', 'Mortgage_Rate']]
 y = df['House_Price_Index']
 
