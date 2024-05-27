@@ -61,19 +61,39 @@ plt.show()
 #lasso
 from sklearn.linear_model import Lasso
 from sklearn.model_selection import train_test_split
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+# Add a constant to the df for the VIF calculation
+X_vif = df.drop(columns=['House_Price_Index']).assign(const=1)
+
+# Calculate and print VIF
+vif = pd.DataFrame()
+vif["variables"] = X_vif.columns
+vif["VIF"] = [variance_inflation_factor(X_vif.values, i) for i in range(X_vif.shape[1])]
+
+print(vif)
 
 # Assume df is your DataFrame and 'House_Price_Index' is your target variable
-X = df.drop('House_Price_Index', axis=1)
+X = df[['Unemployment_Rate', 'Real_GDP', 'Mortgage_Rate']]
 y = df['House_Price_Index']
+
+from sklearn.linear_model import LassoCV
+
+# Create a LassoCV object
+lasso_cv = LassoCV(cv=5)
+
+# Fit it to the data
+lasso_cv.fit(X, y)
+
+# The optimal alpha level is stored in `lasso_cv.alpha_`
+print('Optimal alpha level:', lasso_cv.alpha_)
 
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Create and fit the Lasso regression model
-lasso = Lasso(alpha=0.1)
+lasso = Lasso(alpha=lasso_cv.alpha_)
 lasso.fit(X_train, y_train)
-
-import pandas as pd
 
 # Create a DataFrame with the coefficients and column names
 coef_df = pd.DataFrame({
